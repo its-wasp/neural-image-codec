@@ -1,0 +1,33 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Compressed output (keep sample input, ignore outputs)
+compressed_*
+test_output*
+
+# Model weights / checkpoints (for future ML-based compressors)
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.onnx
+weights/
+checkpoints/
