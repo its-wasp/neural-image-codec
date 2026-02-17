@@ -32,3 +32,21 @@ class BaseCompressor(ABC):
             Compressed image as a numpy array with shape (H, W, C) and dtype uint8.
         """
         ...
+
+    def decompress(self, input_path: str, **params) -> np.ndarray:
+        """Decompress from a compressed file back to an image.
+
+        Optional — only compressors that produce custom file formats
+        (e.g. .cae) need to implement this. Raises NotImplementedError
+        by default.
+
+        Args:
+            input_path: Path to the compressed file.
+            **params: Technique-specific parameters.
+
+        Returns:
+            Reconstructed image as a numpy array (H, W, C) uint8.
+        """
+        raise NotImplementedError(
+            f"'{self.name}' compressor does not support decompression."
+        )
