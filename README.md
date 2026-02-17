@@ -73,7 +73,7 @@ python -m venv .venv
 # source .venv/bin/activate   # macOS/Linux
 
 # Install dependencies
-pip install numpy pillow scipy torch torchvision
+pip install -r requirements.txt
 ```
 
 > **Note:** PyTorch will automatically use your GPU (CUDA) if available. For a CPU-only install (~200MB lighter), use:
