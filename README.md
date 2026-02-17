@@ -64,7 +64,7 @@ ImageCompression/
 
 ```bash
 # Clone the repository
-git clone https://github.com/its-wasp/image-compression-library
+git clone https://github.com/its-wasp/image-compression-library.git
 cd ImageCompression
 
 # Create and activate a virtual environment
