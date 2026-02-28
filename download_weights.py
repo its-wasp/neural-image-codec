@@ -13,7 +13,7 @@ import urllib.request
 import urllib.error
 
 # ── Configuration ────────────────────────────────────────────────────────────
-REPO = "its-wasp/image-compression-library"
+REPO = "its-wasp/neural-image-codec"
 WEIGHTS_DIR = os.path.join(os.path.dirname(__file__), "weights")
 
 # Map of filename → GitHub Release tag

@@ -60,10 +60,10 @@ def encode(image: np.ndarray, model: ConvAutoencoder) -> dict:
     original_h, original_w = image.shape[:2]
 
     pil_img = Image.fromarray(image)
-    tensor = _preprocess(pil_img).unsqueeze(0).to(DEVICE)
+    tensor = _preprocess(pil_img).unsqueeze(0).to(DEVICE) # adding batch dimension
 
     with torch.no_grad():
-        latent = model.encoder(tensor)
+        latent = model.encoder(tensor) # (batch_size, 256, 16, 16)
 
     quantized, l_min, l_max = quantize_latent(latent)
 

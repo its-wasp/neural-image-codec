@@ -36,7 +36,6 @@ class AutoencoderCompressor(BaseCompressor):
             if not os.path.isfile(model_path):
                 raise FileNotFoundError(
                     f"Model weights not found at '{model_path}'. "
-                    f"Place celeb_ae_engine.pth in the weights/ directory."
                 )
             self._model = load_model(model_path)
             self._model_path = model_path

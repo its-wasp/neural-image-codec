@@ -20,6 +20,7 @@ class ConvAutoencoder(nn.Module):
         super().__init__()
 
         # Encoder: 256 -> 128 -> 64 -> 32 -> 16
+
         self.encoder = nn.Sequential(
             nn.Conv2d(3, 32, 3, stride=2, padding=1),
             nn.ReLU(),
