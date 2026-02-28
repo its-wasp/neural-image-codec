@@ -29,16 +29,20 @@ class AutoencoderCompressor(BaseCompressor):
     def __init__(self):
         self._model = None
         self._model_path = None
+        self._model_type = None
 
-    def _ensure_model(self, model_path: str) -> None:
-        """Lazy-load model weights on first use (or if path changes)."""
-        if self._model is None or self._model_path != model_path:
+    def _ensure_model(self, model_path: str, model_type: str) -> None:
+        """Lazy-load model weights on first use (or if path/type changes)."""
+        if (self._model is None
+                or self._model_path != model_path
+                or self._model_type != model_type):
             if not os.path.isfile(model_path):
                 raise FileNotFoundError(
                     f"Model weights not found at '{model_path}'. "
                 )
-            self._model = load_model(model_path)
+            self._model = load_model(model_path, model_type)
             self._model_path = model_path
+            self._model_type = model_type
 
     def compress(self, image: np.ndarray, **params) -> np.ndarray:
         """Compress an image: encode → quantize → save .cae file.
@@ -55,9 +59,11 @@ class AutoencoderCompressor(BaseCompressor):
         Returns:
             (H, W, 3) uint8 numpy array — the reconstructed preview.
         """
-        model_path = params.get("model_path", self.default_params()["model_path"])
+        defaults = self.default_params()
+        model_path = params.get("model_path", defaults["model_path"])
+        model_type = params.get("model_type", defaults["model_type"])
         output_path = params.get("output_path", "compressed.cae")
-        self._ensure_model(model_path)
+        self._ensure_model(model_path, model_type)
 
         # Encode → quantize → payload dict
         payload = encode(image, self._model)
@@ -82,15 +88,20 @@ class AutoencoderCompressor(BaseCompressor):
         Returns:
             (H, W, 3) uint8 numpy array — the reconstructed image.
         """
-        model_path = params.get("model_path", self.default_params()["model_path"])
-        self._ensure_model(model_path)
+        defaults = self.default_params()
+        model_path = params.get("model_path", defaults["model_path"])
+        model_type = params.get("model_type", defaults["model_type"])
+        self._ensure_model(model_path, model_type)
 
         payload = torch.load(input_path, map_location="cpu", weights_only=False)
         return decode(payload, self._model)
 
     @staticmethod
     def default_params() -> dict:
-        return {"model_path": "weights/celeb_ae_engine.pth"}
+        return {
+            "model_type": "residual",
+            "model_path": "weights/celeb_res_perceptual.pth",
+        }
 
 
 def _ensure_cae_extension(path: str) -> str:

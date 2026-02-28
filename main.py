@@ -37,7 +37,7 @@ def main() -> None:
     parser.add_argument("-o", "--output", help="Output path (default: compressed_<input>)")
     parser.add_argument("-m", "--method", default="svd", help="Compression method (default: svd)")
     parser.add_argument("-q", "--quality", type=int, default=85, help="JPEG save quality 1-95 (default: 85)")
-    parser.add_argument("--param", nargs="*", metavar="key=value", help="Method-specific params, e.g. --param k=200")
+    parser.add_argument("--param", action="append", metavar="key=value", help="Method-specific params, e.g. --param k=200 --param model_type=baseline")
     parser.add_argument("--list", action="store_true", help="List all available compression methods")
     parser.add_argument("--decompress", action="store_true", help="Decompress a .cae file back to an image")
 

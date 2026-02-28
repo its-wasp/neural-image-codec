@@ -31,3 +31,9 @@ test_output*
 *.onnx
 weights/
 checkpoints/
+
+
+*.jpg
+*.jpeg
+*.png
+*.cae

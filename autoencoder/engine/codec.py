@@ -10,7 +10,9 @@ import torch
 from torchvision import transforms
 from PIL import Image
 
-from autoencoder.core.model import ConvAutoencoder
+from torch import nn
+
+from autoencoder.core.model import get_model
 from autoencoder.core.quantization import quantize_latent, dequantize_latent
 
 # ── Device selection ─────────────────────────────────────────────────────────
@@ -26,22 +28,23 @@ _preprocess = transforms.Compose([
 ])
 
 
-def load_model(weights_path: str) -> ConvAutoencoder:
-    """Load a ConvAutoencoder with pre-trained weights.
+def load_model(weights_path: str, model_type: str = "residual") -> nn.Module:
+    """Load an autoencoder with pre-trained weights.
 
     Args:
         weights_path: Path to the .pth state-dict file.
+        model_type:   'baseline' (ConvAutoencoder) or 'residual' (ResAutoencoder).
 
     Returns:
         The model in eval mode on the best available device.
     """
-    model = ConvAutoencoder().to(DEVICE)
+    model = get_model(model_type).to(DEVICE)
     model.load_state_dict(torch.load(weights_path, map_location=DEVICE))
     model.eval()
     return model
 
 
-def encode(image: np.ndarray, model: ConvAutoencoder) -> dict:
+def encode(image: np.ndarray, model: nn.Module) -> dict:
     """Compress an image into a quantized payload.
 
     Pipeline: preprocess → encoder → 8-bit quantize.
@@ -75,7 +78,7 @@ def encode(image: np.ndarray, model: ConvAutoencoder) -> dict:
     }
 
 
-def decode(payload: dict, model: ConvAutoencoder) -> np.ndarray:
+def decode(payload: dict, model: nn.Module) -> np.ndarray:
     """Reconstruct an image from a quantized payload.
 
     Pipeline: dequantize → decoder → postprocess → resize to original.

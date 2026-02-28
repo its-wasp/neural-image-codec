@@ -16,9 +16,10 @@ import urllib.error
 REPO = "its-wasp/neural-image-codec"
 WEIGHTS_DIR = os.path.join(os.path.dirname(__file__), "weights")
 
-# Map of filename → GitHub Release tag
+# Map of filename -> GitHub Release tag
 MODELS = {
     "celeb_ae_engine.pth": "v1.0",
+    "celeb_res_perceptual.pth": "v1.0",
 }
 
 
